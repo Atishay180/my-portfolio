@@ -1,28 +1,59 @@
 import Cookies from "js-cookie";
 
-export const getMessageCount = () => {
-    const stored = Cookies.get("chat-usage");
-    if (!stored) return { date: "", count: 0 };
+const DAILY_LIMIT = 10;
+const COOKIE_NAME = "chat-usage";
+
+interface ChatUsage {
+    date: string;
+    count: number;
+}
+
+
+const getToday = () => {
+    return new Date().toLocaleDateString("en-CA");
+};
+
+export const getMessageCount = (): ChatUsage => {
+    const stored = Cookies.get(COOKIE_NAME);
+
+    if (!stored) {
+        return { date: "", count: 0 };
+    }
 
     try {
-        return JSON.parse(stored);
+        const parsed = JSON.parse(stored);
+
+        if (typeof parsed.date !== "string" || typeof parsed.count !== "number") {
+            return { date: "", count: 0 };
+        }
+
+        return parsed;
     } catch {
         return { date: "", count: 0 };
     }
 };
 
 export const updateMessageCount = () => {
-    const today = new Date().toISOString().split("T")[0]; 
+    const today = getToday();
     const { date, count } = getMessageCount();
 
     const newCount = date === today ? count + 1 : 1;
-    Cookies.set("chat-usage", JSON.stringify({ date: today, count: newCount }), {
-        expires: 1,
-    });
+
+    Cookies.set(
+        COOKIE_NAME,
+        JSON.stringify({
+            date: today,
+            count: newCount,
+        }),
+        {
+            expires: 1,
+        }
+    );
 };
 
 export const isLimitReached = () => {
-    const today = new Date().toISOString().split("T")[0];
+    const today = getToday();
     const { date, count } = getMessageCount();
-    return date === today && count >= 3;
+
+    return date === today && count >= DAILY_LIMIT;
 };

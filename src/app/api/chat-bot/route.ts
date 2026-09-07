@@ -78,7 +78,7 @@ You represent Atishay Jain professionally — maintain a helpful, polished, and 
 
 
       const result = await streamText({
-         model: groq("llama-3.3-70b-versatile"),
+         model: groq("openai/gpt-oss-20b"),
          system: systemPrompt,
          messages,
          temperature: 0.7,

@@ -19,7 +19,7 @@ This is a **AI Powered Personal Portfolio Website** built using **Next.js App Ro
 
 ## 🌐 Live Demo
 
-🔗 [Live Website](https://personal-portfolio-git-main-atishayjain8807-6179s-projects.vercel.app)  
+🔗 [Live Website](https://atishay-jain-portfolio.vercel.app/)  
 
 ---
 
